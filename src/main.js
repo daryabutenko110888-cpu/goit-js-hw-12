@@ -50,14 +50,18 @@ async function onSearch(event) {
 
     createGallery(data.hits);
 
-    if (totalHits > 15) {
-      showLoadMoreButton();
-    }
+   if (totalHits <= 15) {
+  iziToast.info({
+    message: "We're sorry, but you've reached the end of search results.",
+  });
+} else {
+  showLoadMoreButton();
+}
   } catch (error) {
-    console.log(error);
-  } finally {
-    hideLoader();
-  }
+  iziToast.error({
+    message: 'Oops! Something went wrong. Try again later.',
+  });
+}
 
   form.reset();
 }
@@ -65,6 +69,7 @@ async function onSearch(event) {
 async function onLoadMore() {
   currentPage += 1;
 
+  hideLoadMoreButton(); 
   showLoader();
 
   try {
@@ -81,11 +86,15 @@ async function onLoadMore() {
         message:
           "We're sorry, but you've reached the end of search results.",
       });
+    } else {
+      showLoadMoreButton(); 
     }
 
     smoothScroll();
   } catch (error) {
-    console.log(error);
+    iziToast.error({ 
+      message: 'Oops! Something went wrong. Try again later.',
+    });
   } finally {
     hideLoader();
   }
