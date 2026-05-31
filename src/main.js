@@ -45,23 +45,26 @@ async function onSearch(event) {
           'Sorry, there are no images matching your search query. Please try again!',
       });
 
-      return;
+      return; 
     }
 
     createGallery(data.hits);
 
-   if (totalHits <= 15) {
-  iziToast.info({
-    message: "We're sorry, but you've reached the end of search results.",
-  });
-} else {
-  showLoadMoreButton();
-}
+    if (totalHits <= 15) {
+      iziToast.info({
+        message:
+          "We're sorry, but you've reached the end of search results.",
+      });
+    } else {
+      showLoadMoreButton();
+    }
   } catch (error) {
-  iziToast.error({
-    message: 'Oops! Something went wrong. Try again later.',
-  });
-}
+    iziToast.error({
+      message: 'Oops! Something went wrong. Try again later.',
+    });
+  } finally {
+    hideLoader(); // ✔️ ГАРАНТИРОВАННО ВСЕГДА СРАБАТЫВАЕТ
+  }
 
   form.reset();
 }
